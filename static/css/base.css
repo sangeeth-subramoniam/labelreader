@@ -9,3 +9,7 @@ video {
     height: 400px;
     object-fit: cover;
 }
+
+h1{
+    font-size: large;
+}
