@@ -5,30 +5,30 @@ from django.contrib.auth import authenticate,login,logout
 from django.http import HttpResponseRedirect,HttpResponse
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
- 
+
 # Create your views here.
 def signup(request):
     registered = False
- 
+
     if request.method == "POST":
         
         user_form = User_form(data=request.POST)
         user_profileform = user_profile_form(data=request.POST)
- 
+
         if(user_form.is_valid() and user_profileform.is_valid()):
             user = user_form.save()
             user.set_password(user.password)
             user.save()
- 
+
             profile = user_profileform.save(commit=False)
             profile.user = user
- 
+
                     
             if 'profile_picture' in request.FILES:
                 profile.profile_picture = request.FILES['profile_picture']
             
             profile.save()
- 
+
             registered = True
         
         else:
@@ -37,12 +37,12 @@ def signup(request):
     else:
         user_form = User_form()
         user_profileform = user_profile_form()
- 
+
     return render(request, "registration/signup.html", {'user_form': user_form , 'user_profileform' : user_profileform, 'registered' : registered  } )
 
 
 # Create your views here.
- 
+
 def signin(request):
     context = {}
     
@@ -50,9 +50,9 @@ def signin(request):
         
         username = request.POST.get('username')
         password = request.POST.get('password')
- 
+
         user = authenticate(username=username, password = password)
- 
+
         if user:
             if user.is_active:
                 login(request,user)

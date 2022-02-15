@@ -1,58 +1,118 @@
 <!DOCTYPE html>
-{% extends "base.html" %}
+{% extends "base_with_nav.html" %}
 {% load static %}
- 
+
 {% block title %}
- 
+
 Homepage
- 
+
 {% endblock %}
- 
+
 {% block body %}
- 
-<h1>Home</h1>
 
-<div class="container">
-    <div class="row-lg-12">
-        <div class="col-lg-4 cam-div">
-            <video id="vid"></video>
-            <br />
-            <button id="but" autoplay>
-                Open WebCam
-            </button>
+<div class="row-lg-12">
+
+    <div class="col-lg-5">
+      <div  class="cam-frame">
+      
+        <img class="image" src="{% static 'css/css_img/SmartPhon1.png' %}" style="width: 55%; height: 8%; margin: 5% 22.5% 0px 22.5%;"><br>
+        
+        <video id="camera" autoplay playsinline style="width:96%; height:70%; margin-top: 0px; margin-left: 2%; margin-right: 2%;"></video>
+        <!--シャッター-->
+      
+        
+        <div id="indicator-target" class="indicator" style="height: 100%;">
+          <input type=submit value=""id='indicator' class="cam_submit_btn" formaction="#" onclick="take_picture(),counter(),sound()" >
         </div>
+      
+      
+        <audio id="demo_sound" preload="auto">
+          <source src="../static/audio/カメラのシャッター2.mp3" type="audio/mp3">
+        </audio>
+      
+      </div>
     </div>
 
-    <div class="col-lg-6">
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Ad, odit ipsum, quod voluptatum hic cumque ex ipsam fugit, minus magnam aliquam explicabo aliquid voluptates earum blanditiis esse dolorem! Et itaque sequi voluptatem dolore iste unde optio at tenetur? Quibusdam nobis tempora repellat quas. Repellendus iure a id. Minus fugit, nostrum cum iste doloribus modi repellat sit quas non nam, quibusdam aliquid est saepe pariatur possimus, sunt eius velit ullam labore mollitia eaque consectetur sequi adipisci iusto. Odio sed aperiam qui.
+    <div class="col-lg-5">
+      <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Distinctio, quaerat optio eveniet architecto mollitia nemo quisquam adipisci quia tempora inventore ipsa blanditiis laboriosam sed, explicabo eos! Ut reiciendis totam optio est velit ab eveniet, doloremque assumenda quas excepturi unde minus adipisci tenetur. Qui repellendus tenetur eligendi facilis sint consectetur non.</p>
     </div>
+
+
 </div>
 
-<script>
-    document.addEventListener("DOMContentLoaded", () => {
-      var but = document.getElementById("but");
-      var video = document.getElementById("vid");
-      var mediaDevices = navigator.mediaDevices;
-      vid.muted = true;
-      but.addEventListener("click", () => {
 
-        // Accessing the user camera and video.
-        mediaDevices
-          .getUserMedia({
-            video: true,
-            audio: true,
-          })
-          .then((stream) => {
 
-            // Changing the source of video to current stream.
-            video.srcObject = stream;
-            video.addEventListener("loadedmetadata", () => {
-              video.play();
-            });
-          })
-          .catch(alert);
-      });
+
+
+  <script>
+    function sound() {
+        var se = document.getElementById('demo_sound');
+        se.play();
+    }
+
+    //カメラ用意
+    var video = document.getElementById('camera');
+    const se = document.querySelector('#se');
+    
+    // カメラ設定
+    const constraints = {
+      audio: false,
+      video: {
+        width: 600,
+        height: 600,
+        facingMode: "environment"   // フロントカメラを利用する⇒user
+      }
+    };
+    
+    //カメラを<video>と同期
+    navigator.mediaDevices.getUserMedia(constraints)
+    .then( (stream) => {
+      video.srcObject = stream;
+      video.onloadedmetadata = (e) => {
+        video.play();  
+      };
+    })
+    .catch( (err) => {
+      console.log(err.name + ": " + err.message);
     });
-  </script>
+    
+    //カウンターファンクション
+    var kaisu = 0;
+    function counter() {
+        var count = document.getElementById('count');
+        var c = parseInt(count.value)
+        if(c == 1){
+          //Annnoyの類似画像出力の際にともに出力した撮影した写真を消す
+          var hyoushi_img = document.getElementById('hyoushi_img');
+          hyoushi_img.style.display ="none";
+          count.value = ++c;
+        }else{
+          count.value = ++c;
+        }
+    }
+    //撮影ファンクション
+    function take_picture() {
+        //videoのstreamをcanvasに書き出す方法
+            var canvas = document.getElementById('canvas');
+            var ctx = canvas.getContext('2d');
+            //videoの縦幅横幅を取得
+            var w = video.offsetWidth;
+            var h = video.offsetHeight;
+            canvas.setAttribute("width", w);
+            canvas.setAttribute("height", h);
+            ctx.drawImage(video, 0, 0, w, h);
+    
+        //canvasをimgに書き出し
+        var img = document.getElementById('img_data');
+        img.value = canvas.toDataURL('image/jpg');
+
+            var w = 180;
+            var h = 180;
+            canvas.setAttribute("width", w);
+            canvas.setAttribute("height", h);
+            ctx.drawImage(video, 0, 0, w, h);
+
+      }
+</script>
  
 {% endblock %}

@@ -2,34 +2,29 @@
 {% block title %} Login Page {% endblock %}
  
 {% block body%}
-    <h1 style="text-align: center;">Fill in your credentials</h1>
+    <h1 class="signin-title">ログイン</h1>
     <br>
     <div class="container">
-    <div class="jumbotron fj">
-        <h2>Please sign in :</h2>
-        <br>
+    
+        <div class="jumbotron fj">
+
         <form action="{% url  'authentication:signin' %}" method="POST">
- 
             {% csrf_token %}
-            <label for="username"> UserName </label>
-            <input type="text" name = "username" placeholder="Enter the Username "  >
- 
+            <label class="signin-form-username-label" for="username"> 職員ID </label>
+            <input type="text" class="form-control signin-form-username" name = "username" placeholder="例）1234 "  >
+
+            <label class="signin-form-password-label" for="password"> パスワード </label>
+            <input class="form-control signin-form-password" type="password" class="form-control" name = "password" placeholder="パスワード"  >
+
             <br>
             <br>
- 
-            <label for="password"> Password </label>
-            <input type="password" name = "password" placeholder="enter the password "  >
- 
-            <br>
-            <br>
- 
-            <input type="submit" value="Submit">
+
+            <input class="login-login-button" type="submit" class="form-control" value="ログイン">
+
+            <input class="login-password-change-button" type="submit" class="form-control" value="パスワード変更">
         
         </form>
     </div>
 </div>
- 
- 
-    
- 
+
 {% endblock %}
