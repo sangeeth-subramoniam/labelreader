@@ -3,8 +3,9 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
     <title>{% block title %} base {%endblock%}</title>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
     <link rel="stylesheet" href="{% static 'css/base.css' %}">
@@ -35,7 +36,7 @@
                 <a href="#" style="font-family: 'Noto Sans JP', sans-serif;" >新規アカウント</a>
             {% endif %}
             {% if request.user.is_authenticated %}
-                <a href="#" style="font-family: 'Noto Sans JP', sans-serif;" >ログアウト</a>
+                <a href="{% url 'authentication:signout' %}" style="font-family: 'Noto Sans JP', sans-serif;" >ログアウト</a>
             {% else %}
                 <a href="#" style="font-family: 'Noto Sans JP', sans-serif;" >ログイン</a>
             {% endif %}
@@ -54,12 +55,21 @@
         {% endblock %}
         
     </div>
-
-    <footer class="page-footer">
+    <div class="footer-start" id="footer-start"></div>
+    <footer id="footer" class="page-footer">
         <div class="footer-container">
             <p class="copyright">© Sic All rights reserved.</p>
         </div>
     </footer>
+    
+    <div id="content-top1" class="top"style="position: relative;">
+        <a href="#top" id="topBtn" style="position: fixed;bottom: 10px;right: 10px; width: 64px; height: 64px;line-height: 64px;text-align: center;
+        background-color: #333;color: rgb(255, 255, 255);">TOP</a>
+    </div>
+    <div id="content-top2" class="top"style="position: relative;">
+        <a href="#top" id="onseiBtn" style="position: fixed;bottom: 80px; right: 10px;width: 64px;height: 64px;line-height: 64px;text-align: center;
+        background-color: rgb(0, 102, 255); color: rgb(255, 255, 255);">音声</a>
+    </div>
     
     <script>
         window.onload = function(){
@@ -71,6 +81,28 @@
             document.getElementById("currentDate").innerHTML = y+"年"+m+"月"+d+"日("+yb+")";
             document.getElementById("tourokubi").value = y+"/"+m+"/"+d;
         }
+
+
+        /* SHOW TOP button at end of page */
+
+        $(document).ready( function() {
+            $("#content-top1").hide(); //hide your div initially
+            $("#content-top2").hide(); //hide your div initially
+            var topOfOthDiv = $("#footer-start").offset().top;
+            
+            $(window).scroll(function() {
+                if($(window).scrollTop() >= topOfOthDiv - 90) { //scrolled past the other div?
+                    $("#content-top1").show() //reached the desired point -- show div
+                    $("#content-top2").show(); //reached the desired point -- show div
+                }
+                else{
+                    $("#content-top1").hide(); //reached the desired point -- show div
+                    $("#content-top2").hide(); //reached the desired point -- show div
+                }
+            });
+        });
+
     </script>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 </body>
 </html>
