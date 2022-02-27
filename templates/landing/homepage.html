@@ -35,7 +35,10 @@ Homepage
               </div>
               
               <div class="col-lg-9">
-                <a href="#"> <button class="btn btn-primary"> <i class="fas fa-camera"></i> バーコードカメラ </button> </a>
+              
+                <a href=" {% url 'homepage:camera' %} "> <button class="btn btn-primary barcode-cam-button"> <i class="fas fa-camera"></i> バーコードカメラ </button> </a>
+                <input type="file" name="barcode-image-input" id="barcode-file">
+              
               </div>
             
             </div>
@@ -64,7 +67,10 @@ Homepage
               </div>
               
               <div class="col-lg-9">
-                <a href="#"> <button class="btn btn-primary"> <i class="fas fa-camera"></i> 表紙撮影カメラ </button> </a>
+              
+                <a href="{% url 'homepage:camera' %}"> <button class="btn btn-primary hyosat-cam-button"> <i class="fas fa-camera"></i> 表紙撮影カメラ </button> </a>
+                <input type="file" name="hyosat-file-input" id="hyosat-file">
+
               </div>
             
             </div>
@@ -78,16 +84,26 @@ Homepage
 
     <div class="col-lg-5">
 
-      <h4 class="shooting-guide-title1">撮影案内</h4>
+      <div class="warning-text">
+        <h4 class="shooting-guide-title1">撮影案内</h4>
 
-      <hr>
+        <hr>
+        
+        <p class="warning-text">※バーコード写真を撮影してください</p>
+  
+        <p class="warning-text">※表紙撮影写真を撮影してください（必須）</p>
+        
+        <button class="home-skip-button">登録</button>
       
-      <p class="warning-text">※バーコード写真を撮影してください</p>
-
-      <p class="warning-text">※表紙撮影写真を撮影してください（必須）</p>
+      </div>
       
-      <button class="home-skip-button">登録</button>
+      <hr style="margin-top: 20%;">
 
+      <div class="similar-images" style="margin-top: 5%;">
+        <h4> 似ている画像 :</h4>
+
+        <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quia temporibus maxime saepe dignissimos quaerat! Obcaecati consectetur ut ipsam eligendi repellat, libero laborum ab aspernatur vitae, facere, rem est eveniet blanditiis?</p>
+      </div>
     </div>
 
 

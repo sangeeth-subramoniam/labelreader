@@ -43,7 +43,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django_forms_bootstrap',
     'authentication',
-    'homepage'
+    'homepage',
+    'core'
 
 ]
 

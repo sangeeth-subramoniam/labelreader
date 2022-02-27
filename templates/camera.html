@@ -10,114 +10,116 @@ Homepage
 
 {% block body %}
 
-<div style=" overflow-x: hidden; overflow-y: hidden; padding: 0%; margin: 0%;">
+<div class="full-camera-page-div">
 
-    <form action="?" method="POST" enctype="multipart/form-data" onSubmit="return double()">
-                    <div  style="background-color: black; border-radius:10px; background-image: linear-gradient(rgba(0, 0, 0, 0.3) 0%,transparent 50%,transparent 50%,rgba(0,0,0,.1) 100%);
-                    box-shadow: 0px 0px 8px 3px rgba(158, 158, 158, 0.699) inset, 0px 0px 8px 3px rgba(255,255,255,.2) inset,2px 2px 2px 2px rgba(0,0,0,.1) inset;
-                    border: 1px solid rgba(0,0,0,.2); width: 100%; max-height: 630px; max-width: 2500px; padding:20px; margin: 0%;">
+    <form action="?" method="POST" class="full-camera-form" enctype="multipart/form-data" onSubmit="return double()">
+        <div class="full-camera-form-div">
 
 
-                    <!--<img class="image" src="./static/css/css_img/SmartPhon1.png" style="width: 55%; height: 8%; margin: 5% 22.5% 0px 22.5%;"><br>-->
-                    <video id="camera" autoplay playsinline style="width:80%; height:500px; margin: 2% 10%; max-width: 2000px; border-radius: 50px; " ></video>
-                    <!--シャッター-->
-                    <div id="indicator-target" class="indicator" style="height: 100%;">
+        <!--<img class="image" src="./static/css/css_img/SmartPhon1.png" style="width: 55%; height: 8%; margin: 5% 22.5% 0px 22.5%;"><br>-->
+        <video id="camera" autoplay playsinline class="full-camera-video-frame"></video>
+        <!--シャッター-->
+        <div id="indicator-target" class="indicator" style="height: 100%;">
 
-                        <div class="row">
+        <div class="row">
 
-                            <div class="col-lg-8">
-                                <input type=submit value=""id='indicator' class="submit_btn" formaction="#" onclick="take_picture(),counter(),sound()" 
-                                style="margin: 0px 75%; margin-top: -20px  ;background-color: white; background-size:contain; width: 200px; height: 50px; max-width: 50px; max-height: 50px; border-radius:30px; 
-                                padding-top: 0; border: 2px solid #9c9c9c;">
-                            </div>
+            <div class="col-lg-8">
 
-                            <div class="col-lg-3">
-                                <button class="btn btn-danger" style="margin-top: -13px; width: 150px;" onclick="history.back()">キャンセルs</button>
-                            </div>
-                        </div>
+                <input type=submit value=""id='indicator' class="submit_btn" formaction="#" onclick="take_picture(),counter(),sound()" 
+                style="margin: 0px 75%; margin-top: -20px  ;background-color: white; background-size:contain; width: 200px; height: 50px; max-width: 50px; max-height: 50px; border-radius:30px; 
+                padding-top: 0; border: 2px solid #9c9c9c;">
+            
+        </div>
 
-                        <canvas id="canvas" width="0px" height="0px" style="display: none;"></canvas>
-                    </div>
-                        <audio id="demo_sound" preload="auto">
-                            <source src="../static/audio/カメラのシャッター2.mp3" type="audio/mp3">
-                        </audio>
+            <div class="col-lg-3">
+                <button class="btn btn-danger" style="margin-top: -13px; width: 150px;" onclick="history.back()">キャンセルs</button>
+            </div>
+        
+        </div>
 
-                    <script>
-                        function sound() {
-                            var se = document.getElementById('demo_sound');
-                            se.play();
-                        }
+        <canvas id="canvas" width="0px" height="0px" style="display: none;"></canvas>
+        
+        </div>
+        
+        <audio id="demo_sound" preload="auto">
+            <source src="../static/audio/カメラのシャッター2.mp3" type="audio/mp3">
+        </audio>
 
-                          //カメラ用意
-                        var video = document.getElementById('camera');
-                        const se = document.querySelector('#se');
-                        
-                        // カメラ設定
-                        const constraints = {
-                        audio: false,
-                        video: {
-                            width: 3000,
-                            height: 800,
-                            facingMode: "environment"   // フロントカメラを利用する⇒user
-                        }
-                        };
+    <script>
+        function sound() {
+            var se = document.getElementById('demo_sound');
+            se.play();
+        }
 
-                        //カメラを<video>と同期
-                        navigator.mediaDevices.getUserMedia(constraints)
-                        .then( (stream) => {
-                        video.srcObject = stream;
-                        video.onloadedmetadata = (e) => {
-                            video.play();  
-                        };
-                        })
-                        .catch( (err) => {
-                        console.log(err.name + ": " + err.message);
-                        });
-                        
-                        //カウンターファンクション
-                        var kaisu = 0;
-                        function counter() {
-                            var count = document.getElementById('count');
-                            var c = parseInt(count.value)
-                            if(c == 1){
-                            //Annnoyの類似画像出力の際にともに出力した撮影した写真を消す
-                            var hyoushi_img = document.getElementById('hyoushi_img');
-                            hyoushi_img.style.display ="none";
-                            count.value = ++c;
-                            }else{
-                            count.value = ++c;
-                            }
-                        }
-                          //撮影ファンクション
-                        function take_picture() {
-                            alert('enters')
-                        //videoのstreamをcanvasに書き出す方法
-                            var canvas = document.getElementById('canvas');
-                            var ctx = canvas.getContext('2d');
-                            //videoの縦幅横幅を取得
-                            var w = video.offsetWidth;
-                            var h = video.offsetHeight;
-                            canvas.setAttribute("width", w);
-                            canvas.setAttribute("height", h);
-                            ctx.drawImage(video, 0, 0, w, h);
-                    
-                        //canvasをimgに書き出し
-                        var img = document.getElementById('img_data');
-                        img.value = canvas.toDataURL('image/jpg');
+        //カメラ用意
+        var video = document.getElementById('camera');
+        const se = document.querySelector('#se');
+        
+        // カメラ設定
+        const constraints = {
+        audio: false,
+        video: {
+            width: 800,
+            height: 800,
+            facingMode: "environment"   // フロントカメラを利用する⇒user
+        }
+        };
 
-                            var w = 180;
-                            var h = 180;
-                            canvas.setAttribute("width", w);
-                            canvas.setAttribute("height", h);
-                            ctx.drawImage(video, 0, 0, w, h);
+        //カメラを<video>と同期
+        navigator.mediaDevices.getUserMedia(constraints)
+        .then( (stream) => {
+        video.srcObject = stream;
+        video.onloadedmetadata = (e) => {
+            video.play();  
+        };
+        })
+        .catch( (err) => {
+        console.log(err.name + ": " + err.message);
+        });
+        
+        //カウンターファンクション
+        var kaisu = 0;
+        function counter() {
+            var count = document.getElementById('count');
+            var c = parseInt(count.value)
+            if(c == 1){
+            //Annnoyの類似画像出力の際にともに出力した撮影した写真を消す
+            var hyoushi_img = document.getElementById('hyoushi_img');
+            hyoushi_img.style.display ="none";
+            count.value = ++c;
+            }else{
+            count.value = ++c;
+            }
+        }
+            //撮影ファンクション
+        function take_picture() {
+            alert('enters')
+        //videoのstreamをcanvasに書き出す方法
+            var canvas = document.getElementById('canvas');
+            var ctx = canvas.getContext('2d');
+            //videoの縦幅横幅を取得
+            var w = video.offsetWidth;
+            var h = video.offsetHeight;
+            canvas.setAttribute("width", w);
+            canvas.setAttribute("height", h);
+            ctx.drawImage(video, 0, 0, w, h);
+    
+        //canvasをimgに書き出し
+        var img = document.getElementById('img_data');
+        img.value = canvas.toDataURL('image/jpg');
 
-                        }
+            var w = 180;
+            var h = 180;
+            canvas.setAttribute("width", w);
+            canvas.setAttribute("height", h);
+            ctx.drawImage(video, 0, 0, w, h);
+
+        }
 </script>
 <!--  -->
-                <dl style="margin-top: 0px;">
-                    <dd><input type="text" id="count" name="count" value={{cameraclick}} style="display: none;" >
-                    <dd><input type="text" id="img_data" name=img_data value=""  style="display: none;">
-                </dl>
+        <div style="margin-top: 0px;">
+                <input type="text" id="count" name="count" value={{cameraclick}} style="display: none;" >
+                <input type="text" id="img_data" name=img_data value=""  style="display: none;">
             </div>
         </div>
 
