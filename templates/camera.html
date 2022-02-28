@@ -1,20 +1,30 @@
 <!DOCTYPE html>
-{% extends "base_with_nav.html" %}
+<html lang="en">
 {% load static %}
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
 
-{% block title %}
-
-Homepage
-
-{% endblock %}
-
-{% block body %}
-
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    
+    <!-- Google Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP&display=swap" rel="stylesheet">
+</head>
+<body>
 <div class="full-camera-page-div">
 
-    <form action="?" method="POST" class="full-camera-form" enctype="multipart/form-data" onSubmit="return double()">
+    <form action="{% url 'homepage:tester' %}" method="POST" class="full-camera-form" enctype="multipart/form-data" onSubmit="return double()">
         <div class="full-camera-form-div">
 
+        <input type="hidden" name="camera_mode" value={{camera_mode}}>
 
         <!--<img class="image" src="./static/css/css_img/SmartPhon1.png" style="width: 55%; height: 8%; margin: 5% 22.5% 0px 22.5%;"><br>-->
         <video id="camera" autoplay playsinline class="full-camera-video-frame"></video>
@@ -25,7 +35,7 @@ Homepage
 
             <div class="col-lg-8">
 
-                <input type=submit value=""id='indicator' class="submit_btn" formaction="#" onclick="take_picture(),counter(),sound()" 
+                <input type=submit value=""id='indicator' class="submit_btn" formaction="{% url 'homepage:tester' %}" onclick="take_picture(),counter(),sound()" 
                 style="margin: 0px 75%; margin-top: -20px  ;background-color: white; background-size:contain; width: 200px; height: 50px; max-width: 50px; max-height: 50px; border-radius:30px; 
                 padding-top: 0; border: 2px solid #9c9c9c;">
             
@@ -59,7 +69,7 @@ Homepage
         const constraints = {
         audio: false,
         video: {
-            width: 800,
+            width: 5000,
             height: 800,
             facingMode: "environment"   // フロントカメラを利用する⇒user
         }
@@ -93,8 +103,7 @@ Homepage
         }
             //撮影ファンクション
         function take_picture() {
-            alert('enters')
-        //videoのstreamをcanvasに書き出す方法
+            //videoのstreamをcanvasに書き出す方法
             var canvas = document.getElementById('canvas');
             var ctx = canvas.getContext('2d');
             //videoの縦幅横幅を取得
@@ -104,9 +113,9 @@ Homepage
             canvas.setAttribute("height", h);
             ctx.drawImage(video, 0, 0, w, h);
     
-        //canvasをimgに書き出し
-        var img = document.getElementById('img_data');
-        img.value = canvas.toDataURL('image/jpg');
+            //canvasをimgに書き出し
+            var img = document.getElementById('img_data');
+            img.value = canvas.toDataURL('image/jpg');
 
             var w = 180;
             var h = 180;
@@ -126,6 +135,6 @@ Homepage
                 {% if barcord %}
                 <input type="text" id="barcord" name="barcord" value={{barcord}} style="display: none;" >
                 {% endif %}
-            </form>
-
-{% endblock %}
+    </form>
+</body>
+</html>

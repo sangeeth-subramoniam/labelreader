@@ -11,14 +11,20 @@ class product(models.Model):
 
     created_by = models.ForeignKey(User, default = ADMIN_USER_ID, on_delete=models.CASCADE)
 
-    barcode_image = ResizedImageField(size=[370, 530], upload_to="product_images", default = "default_shop_product", blank=True, null=True)
-    cover_image = ResizedImageField(size=[370, 530], upload_to="product_images", default = "default_shop_product", blank=True, null=True)
-    label_image = ResizedImageField(size=[370, 530], upload_to="product_images", default = "default_shop_product", blank=True, null=True)
+    barcode_image = models.ImageField(upload_to="product_images", default = "default_shop_product", blank=True, null=True)
+    cover_image = models.ImageField( upload_to="product_images", default = "default_shop_product", blank=True, null=True)
+    label_image = models.ImageField( upload_to="product_images", default = "default_shop_product", blank=True, null=True)
 
     kensa_bango = models.IntegerField(blank=True, null = True)
     kensa_id = models.IntegerField(blank=True, null = True)
 
     shouhinmei = models.CharField(max_length=60, null=True, blank = True)
+
+    status = models.IntegerField(default=0)
+    
+    image_similarity_checked = models.IntegerField(default=0)
+
+    created_at = models.DateTimeField(auto_now=True)
 
 def __str__(self):
     return str(self.created_by.username) + str(id)

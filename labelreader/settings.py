@@ -44,7 +44,8 @@ INSTALLED_APPS = [
     'django_forms_bootstrap',
     'authentication',
     'homepage',
-    'core'
+    'core',
+    'image_processing'
 
 ]
 
@@ -86,7 +87,16 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    },
+
+    #'postgre_db':{
+    #    'ENGINE':'django.db.backends.postgresql_psycopg2',
+    #    'NAME':'収去データ_テスト',
+    #    'USER':'postgres',
+    #    'PASSWORD':'password',
+    #    'HOST':'svl14065-vm01',
+    #    'PORT':'5432',
+    #}
 }
 
 

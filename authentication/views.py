@@ -1,3 +1,4 @@
+from math import prod
 from django.shortcuts import render
 from .forms import User_form , user_profile_form
 
@@ -5,6 +6,8 @@ from django.contrib.auth import authenticate,login,logout
 from django.http import HttpResponseRedirect,HttpResponse
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
+
+from core.models import product
 
 # Create your views here.
 def signup(request):
@@ -56,6 +59,15 @@ def signin(request):
         if user:
             if user.is_active:
                 login(request,user)
+
+                #clear all objects
+                
+                try:
+                    product.objects.all().filter(created_by__username = username, status = 0).delete()
+                    print('all product objects deleted')
+                except Exception as e:
+                    print(' Error ! : ' , e)
+
                 return HttpResponseRedirect(reverse('homepage:home'))
             
             else:

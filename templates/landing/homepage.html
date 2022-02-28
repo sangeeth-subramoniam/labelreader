@@ -22,21 +22,24 @@ Homepage
         <div class="barcode_preview">
           <h5 class="shooting-guide-title2-header">バーコード撮影:</h5><br>
             
-          {% for i in bcdimges %}
+          {% if productinstance.barcode_image %}
           
-            <p class="shooting-guide-title2-content"> {{i}} </p>
+            <div>
+              <img src="{{productinstance.barcode_image.url}}" class="barcode_upload_preview" alt="broken barcode">
+              <a href=" {% url 'homepage:remove_barcode' %} "> <button class="btn btn-danger barcode_upload_delete"> 削除 </button> </a>
+            </div>
           
-          {% empty %}
+          {% else %}
           
             <div class="row">
               
-              <div class="col-lg-3">
-                <p class="shooting-guide-title2-content"> なし </p>
+              <div class="col-lg-6">
+                <p class="shooting-guide-title2-content"> イメージなし </p>
               </div>
               
-              <div class="col-lg-9">
+              <div class="col-lg-6">
               
-                <a href=" {% url 'homepage:camera' %} "> <button class="btn btn-primary barcode-cam-button"> <i class="fas fa-camera"></i> バーコードカメラ </button> </a>
+                <a href=" {% url 'homepage:camera' 'barcode' %} "> <button class="btn btn-primary barcode-cam-button"> <i class="fas fa-camera"></i> バーコードカメラ </button> </a>
                 <input type="file" name="barcode-image-input" id="barcode-file">
               
               </div>
@@ -44,7 +47,7 @@ Homepage
             </div>
             
             
-          {% endfor %}
+          {% endif %}
         
         </div>
 
@@ -54,28 +57,31 @@ Homepage
           
           <h5 class="shooting-guide-title2-header">表紙撮影:</h5><br>
           
-          {% for i in hyosatimges %}
+          {% if productinstance.cover_image %}
 
-            <p class="shooting-guide-title2-content"> {{i}} </p>
+          <div>
+            <img src="{{productinstance.cover_image.url}}" class="hyoushi_upload_preview" alt="broken cover image">
+            <a href="{% url 'homepage:remove_hyoushi' %}"> <button class="btn btn-danger hyoushi_upload_delete"> 削除 </button> </a>
+          </div>
 
-          {% empty %}
+          {% else %}
 
             <div class="row">
                 
-              <div class="col-lg-3">
-                <p class="shooting-guide-title2-content"> なし </p>
+              <div class="col-lg-6">
+                <p class="shooting-guide-title2-content"> イメージなし </p>
               </div>
               
-              <div class="col-lg-9">
+              <div class="col-lg-6">
               
-                <a href="{% url 'homepage:camera' %}"> <button class="btn btn-primary hyosat-cam-button"> <i class="fas fa-camera"></i> 表紙撮影カメラ </button> </a>
+                <a href="{% url 'homepage:camera' 'hyoshi' %}"> <button class="btn btn-primary hyosat-cam-button"> <i class="fas fa-camera"></i> 表紙撮影カメラ </button> </a>
                 <input type="file" name="hyosat-file-input" id="hyosat-file">
 
               </div>
             
             </div>
 
-          {% endfor %}
+          {% endif %}
         </div>
       
       </div>
@@ -89,11 +95,27 @@ Homepage
 
         <hr>
         
-        <p class="warning-text">※バーコード写真を撮影してください</p>
-  
-        <p class="warning-text">※表紙撮影写真を撮影してください（必須）</p>
+        {% if productinstance.barcode_image %}
+
+          <p class="success-text">※バーコード写真 <i class="fa fa-check" aria-hidden="true"></i> </p>
         
-        <button class="home-skip-button">登録</button>
+        {% else %}
+          
+          <p class="warning-text">※バーコード写真を撮影してください </p>
+        
+        {% endif %}
+  
+        {% if productinstance.cover_image %}
+          
+          <p class="success-text">※表紙撮影写真 <i class="fa fa-check" aria-hidden="true"></i></p>
+
+        {% else %}
+        
+          <p class="warning-text">※表紙撮影写真を撮影してください（必須）</p>
+        
+        {% endif %}
+
+        <a href="{% url 'image_processing:image_similarity' %}"><button class="home-skip-button">登録</button></a>
       
       </div>
       
@@ -102,7 +124,15 @@ Homepage
       <div class="similar-images" style="margin-top: 5%;">
         <h4> 似ている画像 :</h4>
 
-        <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quia temporibus maxime saepe dignissimos quaerat! Obcaecati consectetur ut ipsam eligendi repellat, libero laborum ab aspernatur vitae, facere, rem est eveniet blanditiis?</p>
+        {% for imgs in similar_images %}
+          <img src="{{productinstance.cover_image.url}}" alt="broken">
+
+          <img src="{{productinstance.cover_image.url}}" alt="broken">
+        {% empty %}
+
+          <p class="warning-text">イメージなし</p>
+
+        {% endfor %}
       </div>
     </div>
 
