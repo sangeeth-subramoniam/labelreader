@@ -45,7 +45,8 @@ INSTALLED_APPS = [
     'authentication',
     'homepage',
     'core',
-    'image_processing'
+    'image_processing',
+    'management',
 
 ]
 

@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+{% extends "base_with_nav.html" %}
+{% load static %}
+
+{% block title %}
+
+Homepage
+
+{% endblock %}
+
+{% block body %}
+
+<!-- JS SCRIPT -->
+<script src='{% static "js/kensaku_js.js" %}'></script>
+<script src="static/js/indicator-all-controller.js"></script>
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+
+<div class="search-page-container">
+    <div class="jumbotron">
+        
+        {% if error_message %}
+            <div class="container error_message">
+                <p class="error_message_text"> {{error_message}} </p>
+            </div>
+        {%endif%}
+
+        <form class="searchform" action="{% url 'management:search' %}" method="POST">
+            {% csrf_token %}
+            
+            {% if info_msg %}
+                <input type="hidden" id="touroku_info_msg" name="touroku_info_msg" value={{info_msg}} style="display: none;">
+            {% endif %}
+
+            <br>
+
+            <div class="row">
+
+                <div class="col-lg-4">
+                    <label> 登録日: </label>
+                </div>
+
+                <div class="col-lg-8">
+                    <div class="row">
+                        <div class="col-lg-3">
+                            <input type="date" class="form-contol search-date-field" name="date_from" id = "date_from" >
+                        </div>
+
+                        <div class="col-lg-2" style="margin-left:5em;">
+                            <p> ~ </p>
+                        </div>
+
+                        <div class="col-lg-3">
+                            <input type="date" class="form-contol" name="date_to" id = "date_to" >
+                        </div>
+                    </div>                        
+                </div>
+
+            </div>    
+
+            <br><br>
+
+            <div class="row">
+
+                <div class="col-lg-4">
+                    <label for="user_id" > 登録ユーザーID: </label>
+                </div>
+
+                <div class="col-lg-8">
+                    <input type="text" name="user_id" id = "user_id" placeholder="例：1000"> 
+                </div>
+
+            </div>  
+
+            <br>
+
+            <div class="row">
+
+                <div class="col-lg-10">
+
+                </div>
+
+                <div class="col-lg-2">
+                    <button type="submit" class="btn btn-secondary oper-button" value="Search" name = "search-form-submit">Search</button>
+                </div>
+            </div>
+        </form>
+
+    </div>
+</div>
+
+
+<!-- RESULT FORM -->
+
+
+<div class="search-result-container">
+    <br>
+    <br>
+        <div class="search-result-table-div">
+
+            <table class="table search-result-table">
+                
+                <tr>
+                    <th class="table-head">チェック</th>
+                    <th class="table-head">検査番号</th>
+                    <th class="table-head">職員id</th>
+                    <th class="table-head">品名</th>
+                    <th class="table-head">登録日</th>
+                </tr>
+                
+                <form action="{% url 'management:search_form_action' %}" id = "kensakushuseiform" method="POST" onsubmit="formsubmit()">
+                
+                {% csrf_token %}
+                
+                <input type="hidden" name="checkvalue_for_chohyou" id="checkvalue_for_chohyou">
+                
+                {% if products.count < 1 %}
+                    <tr>
+                        <td class="table-data">
+                            
+                        </td>
+                        <td class="table-data">
+                            <p>  </p>
+                        </td>
+                        <td class="table-data">
+                            <p>  </p>
+                        </td>
+                        <td class="table-data">
+                            <p> </p>
+                        </td>  
+                        <td class="table-data">
+                            <p> </p>
+                        </td>                  
+                    </tr>
+                {% else %}
+                    {% for product in products %}
+                    <tr>
+
+                        <td class="table-data">
+                            <input type="radio" name="checker" value="{{forloop.counter0 }}" id="checker1" required style="text-align: center;">
+                        </td>
+
+                        <td class="table-data">
+                            <p> {{product.id}} </p>
+                            <input type="hidden" name="kensa_Bango + {{forloop.counter0 }}" value="{{product.0}}" id="kensa_bango">
+                        </td>
+
+                        <td class="table-data">
+                            <p> {{product.id}} </p>
+                            <input type="hidden" name="user_id + {{forloop.counter0 }}" value="{{product.1}}" id="user_id">
+                        </td>
+
+                        <td class="table-data">
+                            <p> {{product.shouhinmei}} </p>
+                        </td>
+
+                        <td class="table-data">
+                            <p> {{product.created_at}} </p>
+                        </td>        
+
+                    </tr>
+                    {% endfor %}
+                {% endif %}
+
+
+            </table>
+
+        </div>
+
+        <br>
+
+        <div class="container" style="padding: 0% 15%;">
+
+        
+            <div class="row">
+
+                <div class="col-lg-4">
+                    <a href="{% url 'homepage:home' %}"><button type="button" class="btn btn-primary oper-button" style="width:100%"> 戻る </button></a>
+                </div>
+                
+                <div class="col-lg-2">
+                    <button type="button" onclick="shusei();" class="btn btn-primary oper-button"  style="margin-left:50px; width:100%">修正</button>
+                </div>
+
+                <div class="col-lg-2">
+                    <button type="button" onclick="chohyou();" class="btn btn-primary oper-button" value="excel" style="margin-left:50px; width:100%">帳票作成</button></a>
+                </div>
+            
+            </div>
+
+            <input type="hidden" name="downloaded" id="downloaded" value="0">
+        
+        </div>
+    </form>
+
+</div>
+
+
+
+
+
+{% endblock %}

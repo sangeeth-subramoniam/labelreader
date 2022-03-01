@@ -1,49 +1,66 @@
+from email.mime import image
 from django.shortcuts import redirect, render
 
-from static.dependancy import Annoy
+from static.dependancy import Annoy,Barcode
 
 from core.models import product
 
 # Create your views here.
 
-def image_similarity(request):
+def barcode_comparison(product_instance):
 
-    product_instance,created = product.objects.get_or_create(
-            created_by = request.user,
-            status = 0,
-            
-            defaults={
-                'barcode_image' : None,
-                'cover_image' : None,
-                'label_image' : None,
-                'kensa_bango' : None,
-                'kensa_id' : None,
-                'shouhinmei' : None,
-            }
-    )
+    image_path_of_file = str(product_instance.barcode_image.file)
+
+    image_path_of_file_filename = str(image_path_of_file).split('\\')[-1]
+
+    image_directory = r'C:\\Users\\s-sangeeth-k\\Desktop\\django\\labelreader\\media\\product_images\\'
+
+    path_file = str(image_directory) + str(image_path_of_file_filename)
+
+    related_barcode = Barcode.BarcordRead(path_file)
+
+    print(related_barcode)
+
+    return related_barcode
+
+
+
+def image_similarity(product_instance):    
 
     #ANNOY
 
-    host = 'svl14065-vm01'
-    port= '5432'
-    dbname = 'postgres'
-    user = 'postgres'
-    password = 'postgres'
-
     #base_media = r'C:\\Users\\s-sangeeth-k\\Desktop\\django\\labelreader'
     #image_path = os.path.join(base_media,product_instance.cover_image.url) 
-    image_path = r'C:\\Users\\s-sangeeth-k\\Desktop\\django\\labelreader\\media\\product_images\\2sangeeth_hyoushi.png'
+    #image_path = r'C:\\Users\\s-sangeeth-k\\Desktop\\django\\labelreader\\media\\product_images\\3sangeeth_hyoushi_hKJM0V4.png'
+    #image_path = product_instance.cover_image.url
+    
+    image_path_of_file = str(product_instance.cover_image.file)
 
-    print('image path is ', image_path)
+    image_path_of_file_filename = str(image_path_of_file).split('\\')[-1]
 
-    ruigi_img = Annoy.Ruigi_Img(host,port,dbname,user,password,image_path)
+    image_directory = r'C:\\Users\\s-sangeeth-k\\Desktop\\django\\labelreader\\media\\product_images\\'
+
+    path_file = str(image_directory) + str(image_path_of_file_filename)
+
+    ruigi_img = Annoy.Ruigi_Img(path_file)
 
     print('similar images are ', ruigi_img)
+    
 
-    print(ruigi_img[0][0])
-    print(ruigi_img[0][1])
-    print(ruigi_img[0][2])
 
     #check for images with gazo number 32,84,22 and show their value
 
-    return redirect('https://www.google.com')
+    related_images = product.objects.all().filter(gazo_bango__in = ruigi_img[0], status = 1, image_similarity_checked = 1 )
+
+    return related_images
+
+    print(related_images)
+    print('the instance is ', product_instance)
+
+    context = {
+        'productinstance' : product_instance,
+        'related_images' : related_images
+
+    }
+
+    return render(request, 'landing/homepage.html', context)

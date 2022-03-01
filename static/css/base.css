@@ -11,6 +11,7 @@ body{
     background-color: #edeae2;
     min-height: 50vh;
     height: 100%;
+    overflow-x: hidden;
 }
 
 hr {
@@ -246,6 +247,10 @@ hr {
     margin-top: 50px;
 }
 
+.homepage-jumbo{
+    padding: 20% 0%;
+}
+
 .barcode-cam-button{
     margin-bottom: 20px;
 }
@@ -327,6 +332,13 @@ hr {
     margin-top: 15%;
 }
 
+.title-text{
+    font-family: 'Noto Sans JP', sans-serif;
+    color: black;
+    font-weight: bold;
+    font-size: large;
+}
+
 .success-text{
     font-family: 'Noto Sans JP', sans-serif;
     color: green;
@@ -335,9 +347,16 @@ hr {
 
 .warning-text{
     font-family: 'Noto Sans JP', sans-serif;
+    color: rgb(223, 161, 4);
+    font-weight: bold;
+}
+
+.danger-text{
+    font-family: 'Noto Sans JP', sans-serif;
     color: red;
     font-weight: bold;
 }
+
 
 .home-skip-button{
     width: 50%;
@@ -363,6 +382,44 @@ hr {
 .hyoushi_upload_delete, .barcode_upload_delete{
     width: 40%;
     margin: 2% 30%;
+}
+
+.similar_images {
+    height: 150px;
+    width: 100%;
+    border: 1px solid black;
+    border-radius: 10px;
+}
+
+.similar_barcodes{
+    width: 70%;
+    height: 150px;
+    border: 1px solid black;
+    border-radius: 10px;
+    margin: 0% 15%;
+    padding: 0%;
+}
+
+.similar_images:hover , .similar_barcodes:hover{
+    transform: scale(1.1);
+    cursor: pointer;
+}
+
+.empty_similar_image , .empty_similar_barcodes{
+    height: 150px;
+    width: 100%;
+    border: 1px solid black;
+    border-radius: 10px;
+}
+
+.empty_similar_image:hover , .empty_similar_barcodes:hover{
+    cursor: not-allowed;
+}
+
+.no-barcode-warning-text , .no-image-warning-text{
+    font-family: 'Noto Sans JP', sans-serif;
+    margin: 5% 5%;
+    color: #000;
 }
 
 /* FULL SCREEN CAMERA  */
@@ -404,4 +461,54 @@ hr {
     background-color: #000;
     overflow-y: hidden;
     overflow-x: hidden;
+}
+
+
+/* ERROR MESSAGE */
+
+.error_message{
+    width: 80%;
+    margin: 2% 10%;
+    text-align: center;
+}
+
+.error_message_text{
+    color: red;
+    font-weight: bold;
+    font-size: large;
+}
+
+
+
+/* SEARCH PAGE */
+
+.search-page-container{
+    padding: 0% 10%;
+}
+
+.search-date-field{
+    width: 25vh !important;
+}
+
+.search-result-container{
+    padding: 0% 5%;
+}
+
+.search-result-table-div{
+    padding: 0% 10%;
+}
+
+.search-result-table{
+    border: 2px solid black;
+    text-align: center ;
+}
+
+.table-head{
+    text-align: center;
+    padding: 25px 10px !important;
+}
+
+.table-data{
+    text-align: center;
+    padding: 10px 10px !important;
 }

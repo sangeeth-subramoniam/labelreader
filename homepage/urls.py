@@ -10,7 +10,7 @@ urlpatterns = [
     path('', views.home , name = "home"),
     path('camera/<str:mode>', views.camera , name = "camera"),
     
-    path('register_check/<int:bcode>/<int:coverimage>', views.register_check , name = "register_check"),
+    path('register_check', views.register_check , name = "register_check"),
 
     path('tester', views.tester , name = "tester"),
     path('remove_barcode', views.remove_barcode , name = "remove_barcode"),

@@ -1,3 +1,4 @@
+from typing_extensions import Self
 from django.db import models
 from django_resized import ResizedImageField
 from django.contrib.auth.models import User
@@ -14,6 +15,9 @@ class product(models.Model):
     barcode_image = models.ImageField(upload_to="product_images", default = "default_shop_product", blank=True, null=True)
     cover_image = models.ImageField( upload_to="product_images", default = "default_shop_product", blank=True, null=True)
     label_image = models.ImageField( upload_to="product_images", default = "default_shop_product", blank=True, null=True)
+
+    gazo_bango = models.IntegerField(default=0, null=True, blank=True)
+    qr_bango = models.IntegerField(default=0, null=True, blank=True)
 
     kensa_bango = models.IntegerField(blank=True, null = True)
     kensa_id = models.IntegerField(blank=True, null = True)

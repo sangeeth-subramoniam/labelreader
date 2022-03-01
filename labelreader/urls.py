@@ -21,4 +21,5 @@ urlpatterns = [
     path('auth/', include('authentication.urls')),
     path('', include('homepage.urls') ),
     path('image_processing/', include('image_processing.urls') ),
+    path('management/', include('management.urls') ),
 ]

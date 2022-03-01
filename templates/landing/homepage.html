@@ -10,16 +10,25 @@ Homepage
 
 {% block body %}
 
+{% if error_message %}
+
+<div class="error_message">
+  <p class="error_message_text"> {{error_message}} </p>
+</div>
+
+{% endif %}
+
 <div class="row-lg-12 homepage-content">
     
     <div class="col-lg-5">
 
-      <div class="jumbotron">
+      <div class="jumbotron homepage-jumbo">
 
         <h4 class="shooting-guide-title2">撮影した写真</h4>
         <hr>
 
         <div class="barcode_preview">
+          
           <h5 class="shooting-guide-title2-header">バーコード撮影:</h5><br>
             
           {% if productinstance.barcode_image %}
@@ -90,8 +99,8 @@ Homepage
 
     <div class="col-lg-5">
 
-      <div class="warning-text">
-        <h4 class="shooting-guide-title1">撮影案内</h4>
+      <div class="warning-text-div">
+        <h4 class="shooting-guide-title1 title-text">撮影案内</h4>
 
         <hr>
         
@@ -111,107 +120,92 @@ Homepage
 
         {% else %}
         
-          <p class="warning-text">※表紙撮影写真を撮影してください（必須）</p>
+          <p class="danger-text">※表紙撮影写真を撮影してください（必須）</p>
         
         {% endif %}
 
-        <a href="{% url 'image_processing:image_similarity' %}"><button class="home-skip-button">登録</button></a>
+        {% if related_images %}
+          <a href="#"><button class="home-skip-button">登録</button></a>
+        {% else %}
+          <a href="{% url 'homepage:register_check' %}"><button class="home-skip-button">画像チェック</button></a>
+        {% endif %}
       
       </div>
       
-      <hr style="margin-top: 20%;">
+      <hr style="margin-top: 5%;">
 
-      <div class="similar-images" style="margin-top: 5%;">
-        <h4> 似ている画像 :</h4>
+      <div class="similar-barcodes-block" style="margin-top: 10%;">
+        <h4 class="title-text"> 似ているバーコード :</h4>
 
-        {% for imgs in similar_images %}
-          <img src="{{productinstance.cover_image.url}}" alt="broken">
+        {% if related_barcodes %}
+          
+          <div class="row">
 
-          <img src="{{productinstance.cover_image.url}}" alt="broken">
-        {% empty %}
+            <div class="col-lg-12">
 
-          <p class="warning-text">イメージなし</p>
+              {% if related_barcodes.0.barcode_image.url %}
 
-        {% endfor %}
+                <img class="similar_barcodes" src="{{related_barcodes.0.barcode_image.url}}" alt="broken">
+
+              {% else %}
+
+                <div class="empty_similar_barcodes">
+                  
+                </div>
+              
+              {% endif %}
+
+            </div>
+            
+          </div>
+        {% else %}
+
+          <p class="no-barcode-warning-text">バーコードなし</p>
+
+        {% endif %}
       </div>
+
+      <hr style="margin-top: 15%;">
+
+      <div class="similar-images-block" style="margin-top: 10%;">
+        <h4 class="title-text"> 似ている画像 :</h4>
+
+        {% if related_images %}
+          
+          <div class="row">
+
+            <div class="col-lg-4">
+              <img class="similar_images" src="{{related_images.0.cover_image.url}}" alt="broken">
+            </div>
+
+            <div class="col-lg-4">
+              {% if related_images.1.cover_image.url %}
+                <img class="similar_images" src="{{related_images.1.cover_image.url}}" alt="broken">
+              {% else %}
+                <div class="empty_similar_image">
+                </div>
+              {% endif %}
+            </div>
+
+            <div class="col-lg-4">
+              {% if related_images.2.cover_image.url %}
+                <img  class="similar_images" src="{{related_images.2.cover_image.url}}" alt="broken">
+              {% else %}
+                <div class="empty_similar_image">
+                </div>
+              {% endif %}
+            </div>
+            
+          </div>
+        {% else %}
+
+          <p class="no-image-warning-text">イメージなし</p>
+
+        {% endif %}
+      </div>
+
     </div>
 
-
 </div>
-
-
-
-
-
-  <script>
-    function sound() {
-        var se = document.getElementById('demo_sound');
-        se.play();
-    }
-
-    //カメラ用意
-    var video = document.getElementById('camera');
-    const se = document.querySelector('#se');
-    
-    // カメラ設定
-    const constraints = {
-      audio: false,
-      video: {
-        width: 600,
-        height: 600,
-        facingMode: "environment"   // フロントカメラを利用する⇒user
-      }
-    };
-    
-    //カメラを<video>と同期
-    navigator.mediaDevices.getUserMedia(constraints)
-    .then( (stream) => {
-      video.srcObject = stream;
-      video.onloadedmetadata = (e) => {
-        video.play();  
-      };
-    })
-    .catch( (err) => {
-      console.log(err.name + ": " + err.message);
-    });
-    
-    //カウンターファンクション
-    var kaisu = 0;
-    function counter() {
-        var count = document.getElementById('count');
-        var c = parseInt(count.value)
-        if(c == 1){
-          //Annnoyの類似画像出力の際にともに出力した撮影した写真を消す
-          var hyoushi_img = document.getElementById('hyoushi_img');
-          hyoushi_img.style.display ="none";
-          count.value = ++c;
-        }else{
-          count.value = ++c;
-        }
-    }
-    //撮影ファンクション
-    function take_picture() {
-        //videoのstreamをcanvasに書き出す方法
-            var canvas = document.getElementById('canvas');
-            var ctx = canvas.getContext('2d');
-            //videoの縦幅横幅を取得
-            var w = video.offsetWidth;
-            var h = video.offsetHeight;
-            canvas.setAttribute("width", w);
-            canvas.setAttribute("height", h);
-            ctx.drawImage(video, 0, 0, w, h);
-    
-        //canvasをimgに書き出し
-        var img = document.getElementById('img_data');
-        img.value = canvas.toDataURL('image/jpg');
-
-            var w = 180;
-            var h = 180;
-            canvas.setAttribute("width", w);
-            canvas.setAttribute("height", h);
-            ctx.drawImage(video, 0, 0, w, h);
-
-      }
-</script>
 
 {% endblock %}

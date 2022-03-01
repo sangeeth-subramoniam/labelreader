@@ -10,7 +10,7 @@ import numpy as np
 from tensorflow.keras import Model
 from tensorflow.keras.applications.vgg16 import preprocess_input
 
-def Ruigi_Img(host,port,dbname,user,password,imgpath):
+def Ruigi_Img(imgpath):
     
     try:
         f = open(r"C:\\Users\\s-sangeeth-k\\Desktop\\django\\labelreader\\static\\data\\progress.txt", "w")
