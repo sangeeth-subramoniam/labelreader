@@ -10,6 +10,18 @@ Homepage
 
 {% block body %}
 
+<link href="http://code.htmlhifive.com/h5.css" rel="stylesheet" >
+
+<script src="https://code.jquery.com/jquery-2.2.4.js" integrity="sha256-iT6Q9iMJYuQiMWNd9lDyBUStIq/8PuOW33aOqmvFpqI=" crossorigin="anonymous"></script>
+
+<script src="http://www.htmlhifive.com/ja/res/lib/bootstrap3/js/bootstrap.min.js"></script>
+<script src="http://code.htmlhifive.com/ejs-h5mod.js"></script>
+<script src="http://code.htmlhifive.com/h5.dev.js"></script>
+
+<script src="{% static 'js/progress.js' %}"> </script>
+
+<script src="{% static 'js/indicator-all-controller.js' %}"></script>
+
 {% if error_message %}
 
 <div class="error_message">
@@ -125,9 +137,13 @@ Homepage
         {% endif %}
 
         {% if related_images %}
-          <a href="#"><button class="home-skip-button">登録</button></a>
+          <div id="indicator-target" class="indicator">
+            <a href="#" ><button id='indicator' class="home-skip-button">登録</button></a>
+          </div>
         {% else %}
-          <a href="{% url 'homepage:register_check' %}"><button class="home-skip-button">画像チェック</button></a>
+          <div id="indicator-target" class="indicator">
+            <a href="{% url 'homepage:register_check' %}"><button id='indicator' class="home-skip-button">画像チェック</button></a>
+          </div>
         {% endif %}
       
       </div>

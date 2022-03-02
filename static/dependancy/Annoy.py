@@ -1,6 +1,7 @@
 MAGENTA = '\033[45m'
 END = '\033[0m'
 import configparser,time
+import os
 from tkinter import EXCEPTION
 from . import DB
 import tensorflow as tf
@@ -10,10 +11,16 @@ import numpy as np
 from tensorflow.keras import Model
 from tensorflow.keras.applications.vgg16 import preprocess_input
 
+
+from labelreader.settings import BASE_DIR
+
 def Ruigi_Img(imgpath):
+
+    progress_file_path = os.path.join(BASE_DIR, 'static/progress/progress.txt')
+
     
     try:
-        f = open(r"C:\\Users\\s-sangeeth-k\\Desktop\\django\\labelreader\\static\\data\\progress.txt", "w")
+        f = open(progress_file_path, "w")
         f.write("5")
         f.close()
     except:
@@ -23,7 +30,7 @@ def Ruigi_Img(imgpath):
     config_ini.read('config.ini', encoding='utf-8')
 
     try:
-        f = open(r"C:\\Users\\s-sangeeth-k\\Desktop\\django\\labelreader\\static\\data\\progress.txt", "w")
+        f = open(progress_file_path, "w")
         f.write("15")
         f.close()
     except:
@@ -33,7 +40,7 @@ def Ruigi_Img(imgpath):
     start = time.time()
 
     try:
-        f = open(r"C:\\Users\\s-sangeeth-k\\Desktop\\django\\labelreader\\static\\data\\progress.txt", "w")
+        f = open(progress_file_path, "w")
         f.write("20")
         f.close()
     except:
@@ -43,7 +50,7 @@ def Ruigi_Img(imgpath):
     base_model = tf.keras.applications.vgg16.VGG16(weights='imagenet')#weights=''にすれば処理は早くなるが、比較精度がかなり落ちる。  2.378833293914795[sec] 
     
     try:
-        f = open(r"C:\\Users\\s-sangeeth-k\\Desktop\\django\\labelreader\\static\\data\\progress.txt", "w")
+        f = open(progress_file_path, "w")
         f.write("26")
         f.close()
     except:
@@ -52,7 +59,7 @@ def Ruigi_Img(imgpath):
     end = time.time()
 
     try:
-        f = open(r"C:\\Users\\s-sangeeth-k\\Desktop\\django\\labelreader\\static\\data\\progress.txt", "w")
+        f = open(progress_file_path, "w")
         f.write("29")
         f.close()
     except:
@@ -64,7 +71,7 @@ def Ruigi_Img(imgpath):
     x = image.img_to_array(img)
 
     try:
-        f = open(r"C:\\Users\\s-sangeeth-k\\Desktop\\django\\labelreader\\static\\data\\progress.txt", "w")
+        f = open(progress_file_path, "w")
         f.write("45")
         f.close()
     except:
@@ -75,7 +82,7 @@ def Ruigi_Img(imgpath):
     fc2_features = model(x)#model.predict(x) model(x) 0.9550037384033203[sec]
 
     try:
-        f = open(r"C:\\Users\\s-sangeeth-k\\Desktop\\django\\labelreader\\static\\data\\progress.txt", "w")
+        f = open(progress_file_path, "w")
         f.write("56")
         f.close()
     except:
@@ -99,7 +106,7 @@ def Ruigi_Img(imgpath):
         i += 1
     
     try:
-        f = open(r"C:\\Users\\s-sangeeth-k\\Desktop\\django\\labelreader\\static\\data\\progress.txt", "w")
+        f = open(progress_file_path, "w")
         f.write("70")
         f.close()
     except:
@@ -108,7 +115,7 @@ def Ruigi_Img(imgpath):
     print(MAGENTA,"閾値を超えた画像のリスト:",ruigiimg,END)
     
     try:
-        f = open(r"C:\\Users\\s-sangeeth-k\\Desktop\\django\\labelreader\\static\\data\\progress.txt", "w")
+        f = open(progress_file_path, "w")
         f.write("80")
         f.close()
     except:
@@ -116,7 +123,7 @@ def Ruigi_Img(imgpath):
 
     
     try:
-        f = open(r"C:\\Users\\s-sangeeth-k\\Desktop\\django\\labelreader\\static\\data\\progress.txt", "w")
+        f = open(progress_file_path, "w")
         f.write("90")
         f.close()
     except:
@@ -129,7 +136,7 @@ def Ruigi_Img(imgpath):
     
     
     try:
-        f = open(r"C:\\Users\\s-sangeeth-k\\Desktop\\django\\labelreader\\static\\data\\progress.txt", "w")
+        f = open(progress_file_path, "w")
         f.write("99")
         f.close()
     except:

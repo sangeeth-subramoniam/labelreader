@@ -512,3 +512,14 @@ hr {
     text-align: center;
     padding: 10px 10px !important;
 }
+
+
+/* TORIKOMI BUFFER  読み込み中の表示 */
+
+.dump{
+	border: solid 1px gray;
+	padding: 10px;
+	height: 200px;
+	overflow: scroll;
+	overflow-x: hidden;
+}

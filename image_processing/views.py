@@ -1,9 +1,16 @@
 from email.mime import image
+from urllib import request
 from django.shortcuts import redirect, render
 
 from static.dependancy import Annoy,Barcode
 
 from core.models import product
+
+from django.http import JsonResponse
+
+import os
+from labelreader.settings import BASE_DIR
+
 
 # Create your views here.
 
@@ -64,3 +71,31 @@ def image_similarity(product_instance):
     }
 
     return render(request, 'landing/homepage.html', context)
+
+
+from django.views.decorators.csrf import csrf_exempt
+
+@csrf_exempt
+def ajax_progress(request):
+
+    """ ajax """
+    print('EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE')
+
+    if request.method == "POST":
+
+        print('Entering ajax postttttttttttttttttttttttttttttttttttttttt')
+
+        progress_file_path = os.path.join(BASE_DIR, 'static/progress/progress.txt')
+
+        with open(progress_file_path) as file :
+            for line in file :
+                print(line)
+                per = line
+            
+
+        print('Entered ajax')
+
+        return JsonResponse({'percent' : per})
+    
+    else:
+        return redirect('https://www.google.com')
